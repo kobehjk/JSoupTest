@@ -118,10 +118,15 @@ public class MainActivity extends ActionBarActivity
 //            next_page_url = link.select("a").attr("href");
             // 获取tbody元素下的所有tr元素
             Elements elements = doc.select("div.c_inner");
-            for(Element element : elements) {
-                String companyName = element.getElementsByTag("company").text();
-                String time = element.select("td.text-center").first().text();
-                String address = element.getElementsByClass("preach-tbody-addre").text();
+            Elements todayHots = elements.get(1).select("li");
+            for(Element element : todayHots) {
+//                String companyName = element.getElementsByTag("company").text();
+                String companyName = element.select("img").attr("alt");
+//                String time = element.select("td.text-center").first().text();
+//                String address = element.getElementsByClass("preach-tbody-addre").text();
+
+                String time = "";
+                String address = "";
 
                 Map<String, Object> map = new HashMap<>();
                 map.put("company", companyName);
