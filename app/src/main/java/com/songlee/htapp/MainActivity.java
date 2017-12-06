@@ -15,7 +15,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
-import android.util.ArrayMap;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,12 +24,14 @@ import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
 import android.view.WindowManager;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.songlee.htapp.kjnettools.KJDayHotsListener;
+import com.songlee.htapp.kjnettools.KJNetTools;
 
 import org.jsoup.Jsoup;
 import org.jsoup.Connection;
@@ -117,6 +119,9 @@ public class MainActivity extends ActionBarActivity
 //            Elements link = doc.select("li.paginate_button").select("li.next");
 //            next_page_url = link.select("a").attr("href");
             // 获取tbody元素下的所有tr元素
+            if (doc == null){
+                return;
+            }
             Elements elements = doc.select("div.c_inner");
             Elements todayHots = elements.get(1).select("li");
             for(Element element : todayHots) {
@@ -183,7 +188,17 @@ public class MainActivity extends ActionBarActivity
             // 初始时，抓取并显示；切换学校时，重新抓取并显示
             url = url_first_half + (position+1) + url_second_half + currentPage + "/";
             list.clear();
-            new Thread(runnable).start();  // 子线程
+//            new Thread(runnable).start();  // 子线程
+
+            KJNetTools.getHotDays(this, new KJDayHotsListener() {
+                @Override
+                public void getHotDays(List<Map<String,Object>> mapList) {
+                    list = mapList;
+                    show();
+                    Log.d("kobehjk","come");
+                }
+            });
+
         } else {
             // 弹出提示框
             new AlertDialog.Builder(this)
