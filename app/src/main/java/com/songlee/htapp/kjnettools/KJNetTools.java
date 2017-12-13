@@ -52,7 +52,7 @@ abstract public class KJNetTools  {
 
     public static boolean getHotDays(Activity activity,KJDayHotsListener listener){
         if (isNetworkAvailable(activity)){
-            url = KJUrl.testContent;
+            url = KJUrl.liFanShaoNv;
             dataListener = listener;
             new Thread(runnable).start();
             return true;
@@ -82,6 +82,26 @@ abstract public class KJNetTools  {
         }
     }
 
+    private static void handleShaoNv(Document doc){
+        // 获取tbody元素下的所有tr元素
+        Elements elements = doc.select("ul.abc2");
+        Elements todayHots = elements.first().select("li");
+        for(Element element : todayHots) {
+            String name = element.select("b").text();
+            String imgsrc = element.select("img").attr("src");
+            String href = element.select("a.abc1").attr("href");
+
+//            Map<String, Object> map = new HashMap<>();
+//            map.put("company", companyName);
+//            map.put("time", time);
+//            map.put("address", address);
+//            if (dataList == null){
+//                dataList = new ArrayList<>();
+//            }
+//            dataList.add(map);
+        }
+    }
+
 
     private static Runnable runnable = new Runnable() {
         @Override
@@ -98,7 +118,8 @@ abstract public class KJNetTools  {
             if (doc == null){
                 return;
             }
-            handleHotDayData(doc);
+//            handleHotDayData(doc);
+            handleShaoNv(doc);
             // 执行完毕后给handler发送一个空消息
             handler.sendEmptyMessage(0);
         }
