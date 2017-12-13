@@ -52,7 +52,7 @@ abstract public class KJNetTools  {
 
     public static boolean getHotDays(Activity activity,KJDayHotsListener listener){
         if (isNetworkAvailable(activity)){
-            url = KJUrl.liFanShaoNv;
+            url = KJUrl.testContent;
             dataListener = listener;
             new Thread(runnable).start();
             return true;
